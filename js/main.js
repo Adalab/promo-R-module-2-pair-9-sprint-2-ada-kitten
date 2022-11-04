@@ -31,8 +31,10 @@ const kittenData_3 = {
 const kittenDataList = [kittenData_1, kittenData_2, kittenData_3]
 
 
-//validar la raza
 
+
+//validar la raza
+///echarle un ojo, no repetir el h4, incluir solo texto
 function renderRace(race) {
   if (race === "") {
     race = `<p class="card_race">No se ha especificado la raza</p>`
@@ -71,32 +73,38 @@ renderKittenList(kittenDataList);
 
 //búsqueda por descripción
 
+//constantes de buscar
+const input_search_desc = document.querySelector('.js_in_search_desc');
+const input_search_race = document.querySelector('.js_in_search_race');
+const labelSearch = document.querySelector('.error_search');
+let valueSearchDesc = input_search_desc.value;
+let valueSearchRace = input_search_race.value;
+
 const searchBtn = document.querySelector('.js-btn-search');
 
 function filterKitten(event) {
   event.preventDefault();
-  const input_search_desc = document.querySelector('.js_in_search_desc');
-  const input_search_race = document.querySelector('.js_in_search_race');
-  const labelSearch = document.querySelector('.error_search');
-  const ValueSearchDesc = input_search_desc.value;
-  const ValueSearchRace = input_search_race.value;
-  const descrSearchText = input_search_desc.value;
-  if (ValueSearchDesc === "" || ValueSearchRace === "") {
-    labelSearch.innerHTML = 'Debe rellenar todos los valores.'
-  }
-  if (kittenDesc1.includes(descrSearchText)) {
-    listKitten.innerHTML += kittenOne;
-  }
-  if (kittenDesc2.includes(descrSearchText)) {
-    listKitten.innerHTML += kittenTwo;
-  }
-  if (kittenDesc3.includes(descrSearchText)) {
-    listKitten.innerHTML += kittenThree;
-  };
-  console.log(descrSearchText);
+  valueSearchDesc = input_search_desc.value;
+  valueSearchRace = input_search_race.value;  
+  
+   if (valueSearchDesc === "" || valueSearchRace === "") {
+      labelSearch.innerHTML = 'Debe rellenar todos los valores.'
+      }
+  const searchedKitten = kittenDataList.filter(filterFunction);   
+  listKitten.innerHTML = '';
+  renderKittenList(searchedKitten);
+  console.log(searchedKitten);
 };
 
+function filterFunction(kitten){
+  if (kitten.desc.includes(valueSearchDesc) && kitten.race.includes(valueSearchRace) ){  
+  return kitten 
+  }
+}; 
+
 searchBtn.addEventListener('click', filterKitten);
+
+
 
 //Constantes para mostrar/ocultar el formulario
 
