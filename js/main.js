@@ -43,18 +43,6 @@ fetch(SERVER_URL, {
     renderKittenList(kittenDataList);
   });
 
-//petición al servidor
-fetch(SERVER_URL, {
-  method: 'GET',
-  headers: { 'Content-Type': 'application/json' },
-}).then(response => response.json())
-  .then((data) => {
-    kittenDataList = data.results;
-    console.log(kittenDataList)
-    renderKittenList(kittenDataList);
-  });
-
-
 
 //validar la raza
 ///echarle un ojo, no repetir el h4, incluir solo texto
