@@ -40,8 +40,9 @@ let valueRace = inputRace.value;
 const kittenListStored = JSON.parse(localStorage.getItem("kittensList"));
 
 if (kittenListStored !== null) {
-  renderKittenList(kittenListStored);
   kittenDataList = kittenListStored;
+  renderKittenList(kittenDataList);
+
 } else {
   fetch(SERVER_URL, {
     method: "GET",
@@ -54,7 +55,6 @@ if (kittenListStored !== null) {
       renderKittenList(kittenDataList);
       localStorage.setItem("kittensList", JSON.stringify(kittenDataList));
     })
-
     .catch((error) => {
       console.error(error);
     });
@@ -64,9 +64,9 @@ if (kittenListStored !== null) {
 ///echarle un ojo, no repetir el h4, incluir solo texto
 function renderRace(race) {
   if (race === "") {
-    race = `<p class="card_race">No se ha especificado la raza</p>`;
+    race = 'No se ha especificado la raza';
   } else {
-    race = `<h4 class="card_race">${race}</h4>`;
+    race = race;
   }
   console.log(typeof race);
   return race;
@@ -75,18 +75,42 @@ function renderRace(race) {
 //para pintar cada gato
 function renderKitten(kittenData) {
   kittenData.race = renderRace(kittenData.race);
-  const htmlKitten = `<li class="card"><img class="card_img"src=${kittenData.image} alt="gatito"/><h3 class="card_title">${kittenData.name}</h3>${kittenData.race}<p class="card_description"> ${kittenData.desc}</p></li>`;
-  return htmlKitten;
+  const liElement = document.createElement('li');
+  const imgElement = document.createElement('img');
+  const h3Element = document.createElement('h3');
+  const h4Element = document.createElement('h4');
+  const textElement = document.createElement('p');
+  liElement.appendChild(imgElement);
+  liElement.appendChild(h3Element);
+  liElement.appendChild(h4Element);
+  liElement.appendChild(textElement);
+  imgElement.setAttribute('src', kittenData.image);
+  imgElement.setAttribute('alt', "gatito");
+  const h3Text = document.createTextNode(kittenData.name);
+  const raceText = document.createTextNode(kittenData.race);
+  const textDesc = document.createTextNode(kittenData.desc);
+  h3Element.appendChild(h3Text);
+  h4Element.appendChild(raceText);
+  textElement.appendChild(textDesc);
+  liElement.setAttribute('class', 'card');
+  imgElement.setAttribute('class', 'card_img');
+  h3Element.setAttribute('class', 'card_title');
+  h4Element.setAttribute('class', 'card_race');
+  textElement.setAttribute('class', 'card_description');
+  listKitten.appendChild(liElement);
+
+
+  /*const htmlKitten = `<li class="card"><img class="card_img"src=${kittenData.image} alt="gatito"/><h3 class="card_title">${kittenData.name}</h3>${kittenData.race}<p class="card_description"> ${kittenData.desc}</p></li>`;*/
+
 }
 
 //funcion para pintar la lista de gatos
 function renderKittenList(kittenDataList) {
   for (const kitten of kittenDataList) {
-    const htmlKitten = renderKitten(kitten);
-    listKitten.innerHTML += htmlKitten;
+    renderKitten(kitten);
+    /*listKitten.innerHTML += htmlKitten;*/
   }
 }
-
 //búsqueda por descripción
 function filterKitten(event) {
   event.preventDefault();
